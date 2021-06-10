@@ -6,18 +6,22 @@
 Summary:	Library to access J-Link devices
 Summary(pl.UTF-8):	Biblioteka dostępu do urządzeń J-Link
 Name:		libjaylink
-Version:	0.1.0
+Version:	0.2.0
 Release:	1
 License:	GPL v2+
 Group:		Libraries
-Source0:	http://projects.zapb.de/libjaylink/download/%{name}-%{version}.tar.gz
-# Source0-md5:	afbf4631b1caa8acc3ddd111115b4ea9
-URL:		http://git.zapb.de/libjaylink.git
-%{?with_static_libs:BuildRequires:	doxygen}
+#Source0Download: https://gitlab.zapb.de/libjaylink/libjaylink/-/tags
+Source0:	https://gitlab.zapb.de/libjaylink/libjaylink/-/archive/%{version}/%{name}-%{version}.tar.bz2
+# Source0-md5:	613d3e71dca289e997ee2773ca6a0d26
+URL:		https://gitlab.zapb.de/libjaylink/libjaylink
+BuildRequires:	autoconf >= 2.64
+BuildRequires:	automake
+%{?with_apidocs:BuildRequires:	doxygen}
 BuildRequires:	gcc >= 6:4.0
-BuildRequires:	libusb-devel >= 1.0.9
+BuildRequires:	libtool >= 2:2
+BuildRequires:	libusb-devel >= 1.0.16
 BuildRequires:	pkgconfig >= 1:0.23
-Requires:	libusb >= 1.0.9
+Requires:	libusb >= 1.0.16
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -33,7 +37,7 @@ Summary:	Header files for libjaylink library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki libjaylink
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	libusb-devel >= 1.0.9
+Requires:	libusb-devel >= 1.0.16
 
 %description devel
 Header files for libjaylink library.
@@ -53,10 +57,27 @@ Static libjaylink library.
 %description static -l pl.UTF-8
 Statyczna biblioteka libjaylink.
 
+%package apidocs
+Summary:	API documentation for libjaylink library
+Summary(pl.UTF-8):	Dokumentacja API biblioteki libjaylink
+Group:		Documentation
+BuildArch:	noarch
+
+%description apidocs
+API documentation for libjaylink library.
+
+%description apidocs -l pl.UTF-8
+Dokumentacja API biblioteki libjaylink.
+
 %prep
 %setup -q
 
 %build
+%{__libtoolize}
+%{__aclocal} -I m4
+%{__autoconf}
+%{__autoheader}
+%{__automake}
 %configure \
 	%{!?with_static_libs:--disable-static}
 %{__make}
@@ -85,7 +106,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS NEWS README
+%doc AUTHORS NEWS README.md
 %attr(755,root,root) %{_libdir}/libjaylink.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libjaylink.so.0
 /lib/udev/rules.d/60-libjaylink.rules
