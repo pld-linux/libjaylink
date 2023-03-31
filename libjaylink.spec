@@ -6,13 +6,13 @@
 Summary:	Library to access J-Link devices
 Summary(pl.UTF-8):	Biblioteka dostępu do urządzeń J-Link
 Name:		libjaylink
-Version:	0.2.0
+Version:	0.3.1
 Release:	1
 License:	GPL v2+
 Group:		Libraries
 #Source0Download: https://gitlab.zapb.de/libjaylink/libjaylink/-/tags
 Source0:	https://gitlab.zapb.de/libjaylink/libjaylink/-/archive/%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	613d3e71dca289e997ee2773ca6a0d26
+# Source0-md5:	304318ecb4a22f74ebc7358a650b6d09
 URL:		https://gitlab.zapb.de/libjaylink/libjaylink
 BuildRequires:	autoconf >= 2.64
 BuildRequires:	automake
